@@ -9,7 +9,27 @@ from keras.layers import UpSampling2D, Convolution2D, MaxPooling2D
 from keras.layers import Input, BatchNormalization
 import matplotlib.pyplot as plt
 import keras.backend as K
+import pandas as pd
+import pydicom
+import os
+import glob
 
+def reshaping(x, new_shape):
+    for i in range(x.shape(0)):
+        for j in range(x.shape(1)):
+            if x[i][j] == 4095:
+                x[i][j] = 0
+    if x.shape is not new_shape:
+        zeros = np.zeros(new_shape)
+        zeros[:x.shape(0), :x.shape(1)] = x
+        return zeros
+    else:
+        return x
+
+path = '/home/qinghai/research/dream/pilot_images'
+file_list = []
+for filename in glob.glob(os.path.join(path, '*.dcm')):
+    file_list.append(filename)
 
 def convresblock(x, nfeats=64, ksize=3, nskipped=2):
     ''' The proposed residual block from [4]'''
