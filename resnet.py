@@ -14,7 +14,7 @@ import pydicom
 import os
 import glob
 
-def reshaping(x, new_shape):
+def reshaping(x, shape):
     for i in range(x.shape(0)):
         for j in range(x.shape(1)):
             if x[i][j] == 4095:
@@ -26,6 +26,7 @@ def reshaping(x, new_shape):
     else:
         return x
 
+label_file = '/home/qinghai/research/dream/dream/dreamchallenges/images_label.csv'
 path = '/home/qinghai/research/dream/pilot_images'
 file_list = []
 for filename in glob.glob(os.path.join(path, '*.dcm')):
