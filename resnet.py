@@ -32,9 +32,9 @@ file_list = []
 path_list = []
 for filename in glob.glob(os.path.join(path, '*.dcm')):
     path_list.append(filename)
-    file_list.append(filename - path)
-print file_list
-
+    file_list.append(str(filename) - str(path))
+print (file_list)
+input('stop...')
 def convresblock(x, nfeats=64, ksize=3, nskipped=2):
     ''' The proposed residual block from [4]'''
     y0 = Convolution2D(nfeats, ksize, ksize, border_mode='same')(x)
