@@ -2,7 +2,6 @@ from __future__ import print_function
 import numpy as np
 np.random.seed(1337)  # for reproducibility
 
-from keras.datasets import mnist
 from keras.models import Model
 from keras.layers import Activation, merge
 from keras.layers import UpSampling2D, Convolution2D, MaxPooling2D
@@ -32,9 +31,15 @@ file_list = []
 path_list = []
 for filename in glob.glob(os.path.join(path, '*.dcm')):
     path_list.append(filename)
+<<<<<<< HEAD
     file_list.append(str(filename) - str(path))
 print (file_list)
 input('stop...')
+=======
+    file_list.append(filename.replace(path, ''))
+print file_list
+
+>>>>>>> origin/master
 def convresblock(x, nfeats=64, ksize=3, nskipped=2):
     ''' The proposed residual block from [4]'''
     y0 = Convolution2D(nfeats, ksize, ksize, border_mode='same')(x)
@@ -54,7 +59,7 @@ def getwhere(x):
     return K.gradients(K.sum(y_postpool), y_prepool)
 
 # input image dimensions
-img_rows, img_cols = 28, 28
+img_rows, img_cols = 4096, 3328
 
 # the data, shuffled and split between train and test sets
 (X_train, _), (X_test, _) = mnist.load_data()
