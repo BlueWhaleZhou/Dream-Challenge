@@ -31,7 +31,7 @@ file_list = []
 path_list = []
 for filename in glob.glob(os.path.join(path, '*.dcm')):
     path_list.append(filename)
-    file_list.append(filename - path)
+    file_list.append(filename.replace(path, ''))
 print file_list
 
 def convresblock(x, nfeats=64, ksize=3, nskipped=2):
