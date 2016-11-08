@@ -50,7 +50,7 @@ def getwhere(x):
     return K.gradients(K.sum(y_postpool), y_prepool)
 
 # input image dimensions
-img_rows, img_cols = 28, 28
+img_rows, img_cols = 4096, 3328
 
 # the data, shuffled and split between train and test sets
 (X_train, _), (X_test, _) = mnist.load_data()
