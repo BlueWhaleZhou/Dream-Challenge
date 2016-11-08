@@ -18,18 +18,21 @@ def reshaping(x, shape):
         for j in range(x.shape(1)):
             if x[i][j] == 4095:
                 x[i][j] = 0
-    if x.shape is not new_shape:
-        zeros = np.zeros(new_shape)
+    if x.shape is not shape:
+        zeros = np.zeros(shape)
         zeros[:x.shape(0), :x.shape(1)] = x
         return zeros
     else:
         return x
 
 label_file = '/home/qinghai/research/dream/dream/dreamchallenges/images_label.csv'
-path = '/home/qinghai/research/dream/pilot_images'
+path = '/home/qinghai/research/dream/pilot_images/'
 file_list = []
+path_list = []
 for filename in glob.glob(os.path.join(path, '*.dcm')):
-    file_list.append(filename)
+    path_list.append(filename)
+    file_list.append(filename - path)
+print file_list
 
 def convresblock(x, nfeats=64, ksize=3, nskipped=2):
     ''' The proposed residual block from [4]'''
@@ -59,8 +62,8 @@ X_train = X_train.reshape(X_train.shape[0], 1, img_rows, img_cols)
 X_test = X_test.reshape(X_test.shape[0], 1, img_rows, img_cols)
 X_train = X_train.astype('float32')
 X_test = X_test.astype('float32')
-X_train /= 255
-X_test /= 255
+X_train /= 4095
+X_test /= 4095
 print('X_train shape:', X_train.shape)
 print(X_train.shape[0], 'train samples')
 print(X_test.shape[0], 'test samples')
