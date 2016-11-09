@@ -26,14 +26,6 @@ def reshaping(x, shape):
         return x
 shape = (4096, 3328)
 file_list = []
-<<<<<<< HEAD
-path_list = []
-for filename in glob.glob(os.path.join(path, '*.dcm')):
-    path_list.append(filename)
-    file_list.append(filename.replace(path, ''))
-print (file_list)
-print (path_list)
-=======
 label = np.zeros(500)
 path = '/home/qinghai/research/dream/pilot_images/'
 label_file = '/home/qinghai/research/dream/dream/dreamchallenges/images_label.csv'
@@ -55,9 +47,6 @@ data_matrix_f = data_matrix.reshape(500, 1, shape[0], shape[1])
 print (data_matrix_f.shape)
 input('...stop...')
 
-
-
->>>>>>> 33ee8ef6591bd31922684bec8070b881bd613440
 def convresblock(x, nfeats=64, ksize=3, nskipped=2):
     ''' The proposed residual block from [4]'''
     y0 = Convolution2D(nfeats, ksize, ksize, border_mode='same')(x)
