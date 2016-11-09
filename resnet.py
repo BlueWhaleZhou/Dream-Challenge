@@ -47,8 +47,6 @@ data_matrix_f = data_matrix.reshape(500, 1, shape[0], shape[1])
 print (data_matrix_f.shape)
 input('...stop...')
 
-
-
 def convresblock(x, nfeats=64, ksize=3, nskipped=2):
     ''' The proposed residual block from [4]'''
     y0 = Convolution2D(nfeats, ksize, ksize, border_mode='same')(x)
