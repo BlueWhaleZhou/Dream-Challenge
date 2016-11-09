@@ -9,10 +9,10 @@ from keras.layers import Input, BatchNormalization
 import matplotlib.pyplot as plt
 import keras.backend as K
 import pandas as pd
-import pydicom
-import os
-import glob
+import pydicom as dm
 
+
+# processing dcm data
 def reshaping(x, shape):
     for i in range(x.shape(0)):
         for j in range(x.shape(1)):
@@ -24,15 +24,30 @@ def reshaping(x, shape):
         return zeros
     else:
         return x
-
-label_file = '/home/qinghai/research/dream/dream/dreamchallenges/images_label.csv'
-path = '/home/qinghai/research/dream/pilot_images/'
+shape = (4096, 3328)
 file_list = []
-path_list = []
-for filename in glob.glob(os.path.join(path, '*.dcm')):
-    path_list.append(filename)
-    file_list.append(filename.replace(path, ''))
-print file_list
+label = np.zeros(500)
+path = '/home/qinghai/research/dream/pilot_images/'
+label_file = '/home/qinghai/research/dream/dream/dreamchallenges/images_label.csv'
+label_file_data = pd.read_csv(label_file, sep='\t')
+for i in range(len(label_file_data)):
+    file_list.append(label_file_data.values[i][5])
+    label[i] += label_file_data.values[i][6]
+print (file_list)
+print (label)
+filename = path + file_list[0]
+data_matrix = dm.read_file(filename).pixel_array
+print (data_matrix.shape)
+
+for i in range(1, 500):
+    data_temp = dm.read_file(path + file_list[i]).pixel_array
+    data_temp_p = reshaping(data_temp, shape)
+    data_matrix = np.concatenate((data_matrix, data_temp))
+data_matrix_f = data_matrix.reshape(500, 1, shape[0], shape[1])
+print (data_matrix_f.shape)
+input('...stop...')
+
+
 
 def convresblock(x, nfeats=64, ksize=3, nskipped=2):
     ''' The proposed residual block from [4]'''
@@ -43,7 +58,6 @@ def convresblock(x, nfeats=64, ksize=3, nskipped=2):
         y = Activation('relu')(y)
         y = Convolution2D(nfeats, ksize, ksize, border_mode='same')(y)
     return merge([y0, y], mode='sum')
-
 
 def getwhere(x):
     ''' Calculate the "where" mask that contains switches indicating which
