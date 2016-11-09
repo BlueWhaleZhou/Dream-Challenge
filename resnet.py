@@ -14,13 +14,13 @@ import pydicom as dm
 
 # processing dcm data
 def reshaping(x, shape):
-    for i in range(x.shape(0)):
-        for j in range(x.shape(1)):
+    for i in range(x.shape[0]):
+        for j in range(x.shape[1]):
             if x[i][j] == 4095:
                 x[i][j] = 0
     if x.shape is not shape:
         zeros = np.zeros(shape)
-        zeros[:x.shape(0), :x.shape(1)] = x
+        zeros[:x.shape[0], :x.shape[1]] = x
         return zeros
     else:
         return x
