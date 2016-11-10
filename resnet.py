@@ -14,13 +14,13 @@ import pydicom as dm
 
 # processing dcm data
 def reshaping(x, shape):
-    for i in range(x.shape(0)):
-        for j in range(x.shape(1)):
+    for i in range(x.shape[0]):
+        for j in range(x.shape[1]):
             if x[i][j] == 4095:
                 x[i][j] = 0
     if x.shape is not shape:
         zeros = np.zeros(shape)
-        zeros[:x.shape(0), :x.shape(1)] = x
+        zeros[:x.shape[0], :x.shape[1]] = x
         return zeros
     else:
         return x
@@ -36,15 +36,21 @@ for i in range(len(label_file_data)):
 print (file_list)
 print (label)
 filename = path + file_list[0]
-data_matrix = dm.read_file(filename).pixel_array
+data_sample = dm.read_file(filename)
+data_matrix = data_sample.pixel_array
 print (data_matrix.shape)
 
 for i in range(1, 500):
-    data_temp = dm.read_file(path + file_list[i]).pixel_array
-    data_temp_p = reshaping(data_temp, shape)
-    data_matrix = np.concatenate((data_matrix, data_temp))
+    sample_temp = dm.read_file(path + file_list[i])
+    print (file_list[i])
+    data_temp = sample_temp.pixel_array
+    print (data_temp.shape)
+    #data_temp_p = reshaping(data_temp, shape)
+    #data_matrix = np.concatenate((data_matrix, data_temp))
+input('...')
 data_matrix_f = data_matrix.reshape(500, 1, shape[0], shape[1])
 print (data_matrix_f.shape)
+np.savetxt('/home/qinghai/research/dream/dream.txt', data_matrix_f, delimiter=",")
 input('...stop...')
 
 def convresblock(x, nfeats=64, ksize=3, nskipped=2):
