@@ -50,9 +50,8 @@ for i in range(1, 500):
 data_matrix_f = data_matrix.reshape(500, 1, shape[0], shape[1])
 print (data_matrix_f.shape)
 np.savetxt('/home/qinghai/research/dream/dream.txt', data_matrix_f, delimiter=",")
-input('...stop...')
 
-def convresblock(x, nfeats=64, ksize=3, nskipped=2):
+def convresblock(x, nfeats=128, ksize=3, nskipped=2):
     ''' The proposed residual block from [4]'''
     y0 = Convolution2D(nfeats, ksize, ksize, border_mode='same')(x)
     y = y0
