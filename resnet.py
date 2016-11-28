@@ -37,16 +37,16 @@ print (file_list)
 print (label)
 filename = path + file_list[0]
 data_sample = dm.read_file(filename)
-data_matrix = reshaping(data_sample.pixel_array, shape)
+print (type(data_sample.pixel_array))
+data_matrix = np.array(reshaping(data_sample.pixel_array, shape))
 print (data_matrix.shape)
 
 for i in range(1, 500):
-    sample_temp = dm.read_file(path + file_list[i])
-    print (file_list[i])
+    name_temp = path + file_list[i]
+    sample_temp = dm.read_file(name_temp)
     data_temp = sample_temp.pixel_array
-    print (data_temp.shape)
     data_temp_p = reshaping(data_temp, shape)
-    data_matrix = np.concatenate((data_matrix, data_temp))
+    data_matrix = np.concatenate((data_matrix, data_temp_p), axis=0)
 data_matrix_f = data_matrix.reshape(500, 1, shape[0], shape[1])
 print (data_matrix_f.shape)
 np.savetxt('/home/qinghai/research/dream/dream.txt', data_matrix_f, delimiter=",")
