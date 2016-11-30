@@ -1,7 +1,7 @@
 import numpy as np
 import pydicom as dcm
 import cv2
-
+import pandas as pd
 # processing dcm data
 '''
 def reshaping(x, shape):
@@ -39,6 +39,7 @@ matrix = np.zeros(shape)
 for i in range(500):
     name_temp = path + file_list[i]
     sample_temp = dcm.read_file(name_temp)
+    print (sample_temp.pixel_array.shape)
     data_temp = sample_temp.pixel_array.astype('float32')
     data_temp = data_temp * 255 / 4095
     ret, data_temp = cv2.threshold(data_temp, 249.084, 255, cv2.THRESH_TOZERO_INV)
