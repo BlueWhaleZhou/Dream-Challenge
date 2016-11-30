@@ -40,12 +40,15 @@ for i in range(500):
     name_temp = path + file_list[i]
     sample_temp = dcm.read_file(name_temp)
     data_temp = sample_temp.pixel_array.astype('float32')
-    data_temp = data_temp * 255 / 4095
+    data_temp = data_temp * 255.0 / 4095.0
     ret, data_temp = cv2.threshold(data_temp, 249.084, 255, cv2.THRESH_TOZERO_INV)
-    data_temp_reshape = cv2.copyMakeBorder(data_temp, 0, 768, 0, 768, cv2.BORDER_CONSTANT, value=0)
-    print data_temp_reshape.shape
-    data_temp_reshape /= 255.0
-    matrix[i * 4096: i * 4096 + 4096, :] = data_temp_reshape
+    if data_temp.shape is (3328, 2560):
+        data_temp_reshape = cv2.copyMakeBorder(data_temp, 0, 768, 0, 768, cv2.BORDER_CONSTANT, value=0)
+        print (data_temp_reshape.shape)
+        matrix[i * 4096: i * 4096 + 4096, :] = data_temp_reshape
+    else:
+        matrix[i * 4096: i * 4096 + 4096, :] = data_temp
+    matrix /= 255.0
 print (matrix.shape)
 print (matrix)
 np.savetxt('/home/qinghai/research/dream/dream.txt', matrix, delimiter=",")
