@@ -8,48 +8,6 @@ from keras.layers import UpSampling2D, Convolution2D, MaxPooling2D
 from keras.layers import Input, BatchNormalization
 import matplotlib.pyplot as plt
 import keras.backend as K
-import pandas as pd
-import pydicom as dm
-
-
-# processing dcm data
-def reshaping(x, shape):
-    for i in range(x.shape[0]):
-        for j in range(x.shape[1]):
-            if x[i][j] == 4095:
-                x[i][j] = 0
-    if x.shape is not shape:
-        zeros = np.zeros(shape)
-        zeros[:x.shape[0], :x.shape[1]] = x
-        return zeros
-    else:
-        return x
-shape = (4096, 3328)
-file_list = []
-label = np.zeros(500)
-path = '/home/qinghai/research/dream/pilot_images/'
-label_file = '/home/qinghai/research/dream/dream/dreamchallenges/images_label.csv'
-label_file_data = pd.read_csv(label_file, sep='\t')
-for i in range(len(label_file_data)):
-    file_list.append(label_file_data.values[i][5])
-    label[i] += label_file_data.values[i][6]
-print (file_list)
-print (label)
-filename = path + file_list[0]
-data_sample = dm.read_file(filename)
-print (type(data_sample.pixel_array))
-data_matrix = np.array(reshaping(data_sample.pixel_array, shape))
-print (data_matrix.shape)
-
-for i in range(1, 500):
-    name_temp = path + file_list[i]
-    sample_temp = dm.read_file(name_temp)
-    data_temp = sample_temp.pixel_array
-    data_temp_p = reshaping(data_temp, shape)
-    data_matrix = np.concatenate((data_matrix, data_temp_p), axis=0)
-data_matrix_f = data_matrix.reshape(500, 1, shape[0], shape[1])
-print (data_matrix_f.shape)
-np.savetxt('/home/qinghai/research/dream/dream.txt', data_matrix_f, delimiter=",")
 
 def convresblock(x, nfeats=128, ksize=3, nskipped=2):
     ''' The proposed residual block from [4]'''
