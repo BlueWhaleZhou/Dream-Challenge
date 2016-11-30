@@ -34,6 +34,7 @@ data_matrix = data_sample * 255 / 4095
 ret, data_matrix = cv2.threshold(data_matrix, 249.084, 255, cv2.THRESH_TOZERO_INV)
 print (data_matrix.shape)
 '''
+sample_shape = (4096, 3328)
 shape = (2048000, 3328)
 matrix = np.zeros(shape)
 for i in range(500):
@@ -43,7 +44,7 @@ for i in range(500):
     data_temp = sample_temp.pixel_array.astype('float32')
     data_temp = data_temp * 255.0 / 4095.0
     ret, data_temp = cv2.threshold(data_temp, 249.084, 255, cv2.THRESH_TOZERO_INV)
-    if data_temp.shape is (3328, 2560):
+    if data_temp.shape is not sample_shape:
         data_temp_reshape = cv2.copyMakeBorder(data_temp, 0, 768, 0, 768, cv2.BORDER_CONSTANT, value=0)
         print (data_temp_reshape.shape)
         matrix[i * 4096: i * 4096 + 4096, :] = data_temp_reshape
